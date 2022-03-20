@@ -1,13 +1,21 @@
 #!/usr/bin/env bash
 start=`date +%s`
 # set up cmssw
+#export VO_CMS_SW_DIR=/cvmfs/cms.cern.ch   ?
+#source $VO_CMS_SW_DIR/cmsset_default.sh
+#Proxy_path='/afs/cern.ch/user/s/sdeng/.krb5/x509up_u109738'    ?
+#export X509_USER_PROXY=${Proxy_path}
+#voms-proxy-info -all
+#voms-proxy-info -all -file ${Proxy_path} -valid 192:0    ?
+#EVENTS=100
+
 export VO_CMS_SW_DIR=/cvmfs/cms.cern.ch
-source $VO_CMS_SW_DIR/cmsset_default.sh
-Proxy_path='/afs/cern.ch/user/s/sdeng/.krb5/x509up_u109738'
-export X509_USER_PROXY=${Proxy_path}
-voms-proxy-info -all
-voms-proxy-info -all -file ${Proxy_path} -valid 192:0
+source /cvmfs/cms.cern.ch/cmsset_default.sh
+source /cvmfs/cms.cern.ch/rucio/setup-py3.sh
+voms-proxy-init -voms cms -rfc -valid 192:00  #?
 EVENTS=100
+
+
 
 # lhe-gen level production
 if [ -r CMSSW_10_6_22/src ] ; then
@@ -19,7 +27,9 @@ cd CMSSW_10_6_22/src
 eval `scram runtime -sh`
 curl -s -k https://cms-pdmv.cern.ch/mcm/public/restapi/requests/get_fragment/SMP-RunIISummer20UL18wmLHEGEN-00235 --retry 3 --create-dirs -o Configuration/GenProduction/python/SMP-RunIISummer20UL18wmLHEGEN-00235-fragment.py
 # [ -s Configuration/GenProduction/python/SMP-RunIISummer20UL18wmLHEGEN-00235-fragment.py ] || exit $?;
-sed -i -e 's/\/cvmfs\/cms.cern.ch\/phys_generator\/gridpacks\/slc7_amd64_gcc700\/13TeV\/madgraph\/V5_2.6.5\/WZAToLNuLLA_4f_NLO\/WZAToLNuLLA_4f_NLO_slc7_amd64_gcc700_CMSSW_10_6_19_tarball.tar.xz/..\/TARBALLNAME/g' \
+sed -i -e 's/\/cvmfs\/cms.cern.ch\/phys_generator\/gridpacks\/slc7_amd64_gcc700\/13TeV\/madgraph\/V5_2.6.5\/WZAToLNuLLA_4f_NLO\/WZAToLNuLLA_4f_NLO_slc7_amd64_gcc700_CMSSW_10_6_19_tarball.tar.xz/..\/TARBALLNAME/g' \  #?
+#/cvmfs/cms.cern.ch/phys_generator/gridpacks/slc7_amd64_gcc700/13TeV/madgraph/V5_2.6.5/WZAToLNuLLA_4f_NLO/WZAToLNuLLA_4f_NLO_slc7_amd64_gcc700_CMSSW_10_6_19_tarball.tar.xz
+#/home/pku/muty/genproductions/bin/MadGraph5_aMCatNLO
     Configuration/GenProduction/python/SMP-RunIISummer20UL18wmLHEGEN-00235-fragment.py 
 cp ../../randomizeSeeds.py Configuration/GenProduction/python/
 scram b
