@@ -58,6 +58,8 @@ cd CMSSW_10_6_17_patch1/src
 eval `scram runtime -sh`
 scram b
 cd ../..
+
+#from mcm
 cmsDriver.py  --python_filename SMP-RunIISummer20UL18SIM-00092_1_cfg.py \
             --eventcontent RAWSIM \
             --customise Configuration/DataProcessing/Utils.addMonitoring \
