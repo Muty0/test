@@ -11,7 +11,7 @@ start=`date +%s`
 
 export VO_CMS_SW_DIR=/cvmfs/cms.cern.ch
 source /cvmfs/cms.cern.ch/cmsset_default.sh
-source /cvmfs/cms.cern.ch/rucio/setup-py3.sh
+#source /cvmfs/cms.cern.ch/rucio/setup-py3.sh
 voms-proxy-init -voms cms -rfc -valid 192:00  #?
 EVENTS=100
 
@@ -34,6 +34,8 @@ sed -i -e 's/\/cvmfs\/cms.cern.ch\/phys_generator\/gridpacks\/slc7_amd64_gcc700\
 cp ../../randomizeSeeds.py Configuration/GenProduction/python/
 scram b
 cd ../..
+
+#from mcm use UL v9 
 cmsDriver.py Configuration/GenProduction/python/SMP-RunIISummer20UL18wmLHEGEN-00235-fragment.py \
             --python_filename SMP-RunIISummer20UL18wmLHEGEN-00235_1_cfg.py \
             --eventcontent RAWSIM,LHE \
